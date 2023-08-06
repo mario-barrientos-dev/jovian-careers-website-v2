@@ -38,12 +38,16 @@
   </head>
   <body>
     <div id="container">
-        <h1 class="mt-2">Syletering Developers Jobs</h1>
+        <h1 class="mt-2">{{company_name}} Developers Jobs</h1>
         <img id="banner" src="static/SlytherinCommonRoom.webp"/>
         <h2>About Slythering Developers.</h2>
         <p class="bodytext">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque suscipit turpis eu tempor finibus. Donec tellus urna, convallis ac urna accumsan, molestie fermentum lacus. Nam nisl dui, volutpat sed velit at, condimentum feugiat arcu. Quisque fermentum sagittis gravida. Nunc et ipsum diam. Nam posuere a mi fringilla laoreet. Quisque posuere sit amet purus sit amet volutpat. Mauris odio lorem, tristique at leo mollis, tempor mollis eros. Aliquam efficitur felis ut iaculis aliquam. Integer dictum posuere ipsum, sed cursus est lacinia sed. Duis aliquet quam volutpat orci pulvinar, eu pretium tellus tincidunt. Nam ultricies erat a tempor molestie. Vestibulum posuere, libero ut congue vehicula, nisi velit ullamcorper neque, sit amet accumsan turpis neque vitae elit. Integer leo est, sodales sed suscipit ut, egestas vel urna. In interdum commodo eleifend. Morbi neque mauris, lacinia a est eget, pretium mattis diam.</p>
         <h2>Open Positions</h2>
-        <p>TODO: ALL</p>
+       
+      {% for job in jobs %}
+        {% include 'jobItem.html' %}
+      {% endfor %}
+         
       <div style="text-align: center">
         <button class="btn btn-primary btn-large">Contact us</button>
       <p>CopyRigth 2023, Mario</p>
