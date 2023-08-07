@@ -1,60 +1,35 @@
 from flask import Flask, render_template, jsonify
+from sqlalchemy import text
+from database import engine
 
 app = Flask(__name__)
 
-JOBS = [
-  {
-    "id":
-    1,
-    "title":
-    "Data Analist",
-    "location":
-    "Bogota, Colombia",
-    "description":
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla posuere mattis dui sit amet ullamcorper. Cras vitae vulputate nisl, eu.",
-  },
-  {
-    "id":
-    2,
-    "title":
-    "ML Engineer",
-    "location":
-    "Bucaramanga, Colombia",
-    "description":
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla posuere mattis dui sit amet ullamcorper. Cras vitae vulputate nisl, eu.",
-  },
-  {
-    "id":
-    3,
-    "title":
-    "Backend Developer",
-    "location":
-    "Medellin, Colombia",
-    "description":
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla posuere mattis dui sit amet ullamcorper. Cras vitae vulputate nisl, eu.",
-  },
-  {
-    "id":
-    4,
-    "title":
-    "FullStack Developer",
-    "location":
-    "Pasto, Colombia",
-    "description":
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla posuere mattis dui sit amet ullamcorper. Cras vitae vulputate nisl, eu.",
-  },
-]
+
+def load_jobs_from_db():
+  with engine.connect() as conn:
+    results = conn.execute(text("select * from jobs"))
+    column_names = results.keys()  # Obtener los nombres de las columnas
+    jobs = []
+
+    for row in results.all():
+      result_dict = dict(
+        zip(column_names,
+            row))  # Combinar nombres de columna con valores de la fila
+      jobs.append(result_dict)
+
+    return jobs
 
 
 @app.route("/")
 def helloWord():
-  # greeting = "Hola Mundo"
-  return render_template("home.html", jobs=JOBS, company_name="Slytherin")
+  jobs = load_jobs_from_db()
+  return render_template("home.html", jobs=jobs, company_name="Slytherin")
 
 
 @app.route("/api/jobs")
 def list_jobs():
-  return jsonify(JOBS)
+  jobs = load_jobs_from_db()
+  return jsonify(jobs)
 
 
 if __name__ == "__main__":
